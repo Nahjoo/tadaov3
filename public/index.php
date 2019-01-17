@@ -25,7 +25,7 @@ $twig = new Twig_Environment($loader, [
         'driver'    => 'pdo_mysql',
         'host'      => '127.0.0.1',
         'port'      => '3306',
-        'dbname'    => 'tadao2',
+        'dbname'    => 'bus',
         'user'      => 'nahjo',
         'password'  => 'J0han/62410',
         'charset'   => 'utf8mb4',
@@ -35,11 +35,7 @@ $twig = new Twig_Environment($loader, [
     // la variable `$conn` permet de communiquer avec la BDD
     $conn = DriverManager::getConnection($connectionParams, $config);
     
-    
     $fp = fopen("tadao/gtf/routes.txt", "r"); 
-    
-    
-    
     while($ligne = fgetcsv($fp))
     {
         
@@ -52,16 +48,26 @@ $twig = new Twig_Environment($loader, [
         $splits = explode(" - ", $towns);
 
         foreach ($splits as $split) {
-        
+            echo $listes[0];
+            $town_split = $conn->insert('route', [
+                'route_id' => $listes[0],
+                'route_short_name ' => $listes[1] ,
+                'route_long_name ' => $split,
+                'route_desc ' => $listes[3],
+                'route_type' => $listes[4],
+                'route_url' => $listes[5],
+                
+            ]);
+           
             echo $split;
             echo "<br>";
-        }
-        
 
+            
+        }
     }
     
-    
-    echo $twig->render('home.html.twig', [
+
+echo $twig->render('home.html.twig', [
         
         
-    ]);
+]);
